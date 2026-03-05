@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { timelineEvents } from "@/lib/timelineData";
 import AnimatedTimeline from "@/components/AnimatedTimeline";
 import AuthModal from "@/components/AuthModal";
+import TransmissionForm from "@/components/TransmissionForm";
 
 export default function Home() {
   const [isDebugMode, setIsDebugMode] = useState(false);
@@ -66,6 +67,24 @@ export default function Home() {
       <main className="w-full max-w-2xl flex-1">
         <AnimatedTimeline events={timelineEvents} isDebugMode={isDebugMode} />
       </main>
+
+      {/* Secure Transmission — only visible when unlocked */}
+      <AnimatePresence>
+        {isDebugMode && (
+          <motion.section
+            className="w-full max-w-2xl mt-8"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-xs font-mono text-zinc-600 mb-2 tracking-widest uppercase">
+              Secure Transmission
+            </p>
+            <TransmissionForm />
+          </motion.section>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
       <motion.footer

@@ -28,8 +28,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     e.preventDefault();
     if (step === 1) {
       const normalized = inputValue.toLowerCase().replace(/\s+/g, "");
-      const targetCollege = (process.env.NEXT_PUBLIC_TARGET_COLLEGE ?? "").toLowerCase().replace(/\s+/g, "");
-      const valid = normalized === targetCollege;
+      const targets = (process.env.NEXT_PUBLIC_TARGET_COLLEGE ?? "").split(",").map((v) => v.trim().toLowerCase().replace(/\s+/g, ""));
+      const valid = targets.some((t) => t === normalized);
       if (valid) {
         setHasError(false);
         setInputValue("");
@@ -38,10 +38,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         triggerShake();
       }
     } else {
-      if (inputValue.trim() === (process.env.NEXT_PUBLIC_TARGET_DOB ?? "")) {
+      const dobTargets = (process.env.NEXT_PUBLIC_TARGET_DOB ?? "").split(",").map((v) => v.trim());
+      if (dobTargets.some((t) => t === inputValue.trim())) {
         setHasError(false);
         setInputValue("");
         setStep(1);
+        try {
+          fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL ?? "", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ event: "system_unlocked", timestamp: new Date().toISOString() }),
+          });
+        } catch (_) {}
         onSuccess();
       } else {
         triggerShake();

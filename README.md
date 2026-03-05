@@ -10,7 +10,7 @@ A high-end frontend architectural study and UI component showcase built to demon
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
 | Animation | Framer Motion |
@@ -22,24 +22,26 @@ A high-end frontend architectural study and UI component showcase built to demon
 - **Spring-based scroll animations** — Fluid, physics-driven entry transitions orchestrated via Framer Motion's spring engine.
 - **Seamless state crossfading** — Dual-panel timeline toggling powered by `AnimatePresence` for zero-flash state transitions.
 - **Encrypted authentication modal** — A simulated 2-step challenge/response access flow with shake-on-failure feedback and step-scoped input isolation.
+- **Secure Transmission panel** — A terminal-style message input that surfaces post-unlock, firing a webhook payload on submission.
 - **Dark-mode-first design** — Minimalist, accessible UI inspired by Linear and Vercel. Fully responsive across all viewport sizes.
 
 ---
 
 ## Environment Variables
 
-The encrypted modal feature reads its validation targets from environment variables. A template file is included in the repository.
+A template file is included in the repository. Copy it and fill in your values:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Then fill in the values in `.env.local`:
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_TARGET_COLLEGE` | Expected answer for Clearance Level 1 |
+| `NEXT_PUBLIC_TARGET_DOB` | Expected answer for Clearance Level 2 |
+| `NEXT_PUBLIC_N8N_WEBHOOK_URL` | Webhook endpoint for unlock ping and secure transmissions |
 
-```env
-NEXT_PUBLIC_TARGET_COLLEGE=your_value_here
-NEXT_PUBLIC_TARGET_DOB=your_value_here
-```
+Multiple accepted answers can be provided as comma-separated values (e.g. `kypj,Kolej Yayasan Pelajaran Johor`).
 
 > `.env.local` is excluded from version control. Never commit secrets to the repository.
 
