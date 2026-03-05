@@ -28,7 +28,13 @@ A high-end frontend architectural study and UI component showcase built to demon
 
 ## Environment Variables
 
-The encrypted modal feature reads its validation targets from environment variables. To test locally, create a `.env.local` file in the project root:
+The encrypted modal feature reads its validation targets from environment variables. A template file is included in the repository.
+
+```bash
+cp .env.example .env.local
+```
+
+Then fill in the values in `.env.local`:
 
 ```env
 NEXT_PUBLIC_TARGET_COLLEGE=your_value_here
