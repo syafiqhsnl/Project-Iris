@@ -41,8 +41,6 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_TARGET_DOB` | Expected answer for Clearance Level 2 |
 | `NEXT_PUBLIC_N8N_WEBHOOK_URL` | Webhook endpoint for unlock ping and secure transmissions |
 
-Multiple accepted answers can be provided as comma-separated values (e.g. `kypj,Kolej Yayasan Pelajaran Johor`).
-
 > `.env.local` is excluded from version control. Never commit secrets to the repository.
 
 ---
