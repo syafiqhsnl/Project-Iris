@@ -1,0 +1,10 @@
+services:
+  iris-portfolio:
+    build: .
+    container_name: project-iris
+    restart: unless-stopped
+    ports:
+      # Mapping your VPS port 3103 to the container's port 3000
+      - "3103:3000"
+    environment:
+      - NODE_ENV=production

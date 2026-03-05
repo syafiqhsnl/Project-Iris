@@ -1,65 +1,115 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { timelineEvents } from "@/lib/timelineData";
+import AnimatedTimeline from "@/components/AnimatedTimeline";
+import AuthModal from "@/components/AuthModal";
 
 export default function Home() {
+  const [isDebugMode, setIsDebugMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans selection:bg-zinc-800 selection:text-zinc-100 flex flex-col items-center py-24 px-6">
+      {/* Hero */}
+      <motion.header
+        className="w-full max-w-2xl mb-20"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="flex items-center gap-2.5 mb-4">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+            Iris
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+          {/* Glowing dot */}
+          <span className="relative flex h-2 w-2 mt-0.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-400 opacity-30" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-zinc-500" />
+          </span>
+          {/* Version badge — secret trigger */}
+          <AnimatePresence mode="wait" initial={false}>
+            {!isDebugMode ? (
+              <motion.button
+                key="badge-locked"
+                onClick={() => setIsModalOpen(true)}
+                className="ml-1 px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                v11.03
+              </motion.button>
+            ) : (
+              <motion.button
+                key="badge-unlocked"
+                onClick={() => setIsDebugMode(false)}
+                className="ml-1 px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                &gt;_ unlocked
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <p className="text-sm text-zinc-500 leading-relaxed max-w-sm">
+          A temporal study in chronological data orchestration.
+        </p>
+      </motion.header>
+
+      {/* Timeline */}
+      <main className="w-full max-w-2xl flex-1">
+        <AnimatedTimeline events={timelineEvents} isDebugMode={isDebugMode} />
       </main>
+
+      {/* Footer */}
+      <motion.footer
+        className="w-full max-w-2xl mt-24 pt-8 border-t border-white/5 flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {!isDebugMode ? (
+            <motion.p
+              key="footer-professional"
+              className="text-xs text-zinc-600 font-mono"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              System Status: Nominal.
+            </motion.p>
+          ) : (
+            <motion.p
+              key="footer-personal"
+              className="text-xs text-zinc-600 font-mono"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              System remains open for reconnection. Happy Birthday.
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </motion.footer>
+
+      {/* Auth modal */}
+      <AuthModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={() => {
+          setIsDebugMode(true);
+          setIsModalOpen(false);
+        }}
+      />
     </div>
   );
 }
